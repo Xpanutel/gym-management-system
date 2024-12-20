@@ -5,7 +5,30 @@ import (
 	"athleticclub/database"
 	"html/template"
 	"net/http"
+	"github.com/go-telegram-bot-api/telegram-bot-api"
+	"log"
 )
+
+const (
+	TelegramBotToken = "TOKEN"
+	ChatID = "CHATID"
+)
+
+func sendTelegramMessage(name, phoneNumber, birthDate, adres string) error {
+	bot, err := tgbotapi.NewBotAPI(TelegramBotToken)
+	if err != nil {
+		return err
+	}
+
+	message := tgbotapi.NewMessage(ChatID, "Добавлен новый клиент:\n\n"+
+		"Имя: "+name+"\n"+
+		"Телефон: "+phoneNumber+"\n"+
+		"Дата рождения: "+birthDate+"\n"+
+		"Адрес: "+adres)
+
+	_, err = bot.Send(message)
+	return err
+}
 
 // Создание нового клиента
 func AddClient(w http.ResponseWriter, r *http.Request) {
@@ -22,6 +45,12 @@ func AddClient(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
+		}
+
+		// Отправка сообщения в Telegram
+		err = sendTelegramMessage(name, phoneNumber, birthDate, adres)
+		if err != nil {
+			log.Println("Ошибка при отправке сообщения в Telegram:", err)
 		}
 
 		http.Redirect(w, r, "/clients", http.StatusSeeOther)
