@@ -1,5 +1,7 @@
 package models
 
+import "time"
+
 type Subscription struct {
 	ID			int
 	Name		string
