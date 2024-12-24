@@ -39,11 +39,7 @@ func InitDB(dataSourceName string) {
 			id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
 			name VARCHAR(100) NOT NULL,
 			price DECIMAL(10,2) NOT NULL,
-			sold_date DATE NOT NULL,
-			client_id INT NOT NULL, 
-			employee_id INT NOT NULL,
-			FOREIGN KEY (client_id) REFERENCES clients(id),
-			FOREIGN KEY (employee_id) REFERENCES employees(id)
+			period VARCHAR(50) NOT NULL
 		);`,
 	}
 

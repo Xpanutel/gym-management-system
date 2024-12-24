@@ -16,6 +16,9 @@ func main() {
 	http.HandleFunc("/employees", handlers.ShowEmployees)
 	http.HandleFunc("/add-emp", handlers.AddEmployee)
 
+	http.HandleFunc("/subs", handlers.ShowSubs)
+	http.HandleFunc("/add-sub", handlers.AddSub)
+
 	log.Println("Сервер запущен на :8080")
 	if err := http.ListenAndServe(":8080", nil); err != nil {
 		log.Fatal(err)

@@ -14,10 +14,8 @@
             <tr>
                 <th>ID</th>
                 <th>Название</th>
-                <th>Дата покупки</th>
                 <th>Цена</th>
-                <th>Клиент</th>
-                <th>Сотрудник</th>
+                <th>Срок действия</th>
             </tr>
         </thead>
         <tbody>
@@ -25,31 +23,23 @@
             <tr>
                 <td>{{.ID}}</td>
                 <td>{{.Name}}</td>
-                <td>{{.SoldDate}}</td>
                 <td>{{.Price}}</td>
-                <td>{{.ClientID}}</td>
-                <td>{{.EmployeeID}}</td>
+                <td>{{.Period}}</td>
             </tr>
             {{end}}
         </tbody>
     </table>
 
-    <h2>Добавить нового клиента</h2>
+    <h2>Добавить абонемент</h2>
     <form method="POST" action="/add-sub">
         <label for="name">Имя:</label>
         <input type="text" id="name" name="name" required>
 
-        <label for="sold_date">Дата покупки:</label>
-        <input type="date" id="sold_date" name="sold_date" required>
-
         <label for="price">Цена:</label>
         <input type="text" id="price" name="price" required>
 
-        <label for="client_id">Клиент:</label>
-        <input type="text" id="client_id" name="client_id" required>
-
-        <label for="employee_id">Сотрудник:</label>
-        <input type="text" id="employee_id" name="employee_id" required>
+        <label for="period">Период:</label>
+        <input type="text" id="period" name="period" required>
 
         <button type="submit">Добавить клиента</button>
     </form>
