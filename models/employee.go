@@ -2,6 +2,6 @@ package models
 
 type Employee struct {
 	ID			int
-	Username	string
+	Name		string
 	Password	string
 }

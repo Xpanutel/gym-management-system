@@ -25,7 +25,7 @@ func SendTelegramMessageClient(name, phoneNumber, birthDate, adres string) error
 	return err
 }
 
-func SendTelegramMessageSub(name, price, soldDate, clientID string) error {
+func SendTelegramMessageSub(name, price, soldDate, clientID, employeeID string) error {
 	bot, err := tgbotapi.NewBotAPI(TelegramBotToken)
 	if err != nil {
 		return err
@@ -35,7 +35,8 @@ func SendTelegramMessageSub(name, price, soldDate, clientID string) error {
 		"Имя: "+name+"\n"+
 		"Цена: "+price+"\n"+
 		"Дата покупки: "+soldDate+"\n"+
-		"Клиент: "+clientID)
+		"Клиент: "+clientID+"\n"+
+		"Сотрудник: "+employeeID)
 
 	_, err = bot.Send(message)
 	return err

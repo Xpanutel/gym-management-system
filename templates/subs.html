@@ -17,6 +17,7 @@
                 <th>Дата покупки</th>
                 <th>Цена</th>
                 <th>Клиент</th>
+                <th>Сотрудник</th>
             </tr>
         </thead>
         <tbody>
@@ -27,6 +28,7 @@
                 <td>{{.SoldDate}}</td>
                 <td>{{.Price}}</td>
                 <td>{{.ClientID}}</td>
+                <td>{{.EmployeeID}}</td>
             </tr>
             {{end}}
         </tbody>
@@ -45,6 +47,9 @@
 
         <label for="client_id">Клиент:</label>
         <input type="text" id="client_id" name="client_id" required>
+
+        <label for="employee_id">Сотрудник:</label>
+        <input type="text" id="employee_id" name="employee_id" required>
 
         <button type="submit">Добавить клиента</button>
     </form>
