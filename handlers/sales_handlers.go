@@ -54,10 +54,29 @@ func PurchaseMembership(w http.ResponseWriter, r *http.Request) {
 }
 
 func ShowPurchaseForm(w http.ResponseWriter, r *http.Request) {
+	clients, err := GetClients() 
+	if err != nil {
+		http.Error(w, "Ошибка получения клиентов", http.StatusInternalServerError)
+		return
+	}
+
+	subscriptions, err := GetSubs() 
+	if err != nil {
+		http.Error(w, "Ошибка получения клиентов", http.StatusInternalServerError)
+		return
+	}
+
+	data := struct {
+		Clients []models.Client
+		Subscriptions []models.Subscription
+	}{
+		Clients:	clients,
+		Subscriptions: subscriptions,
+	}
+
 	tmpl := template.Must(template.ParseFiles("templates/sales.html"))
-	if err := tmpl.Execute(w, nil); err != nil {
+	if err := tmpl.Execute(w, data); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 }
-

@@ -59,3 +59,33 @@ func ShowClients(w http.ResponseWriter, r *http.Request) {
 	tmpl := template.Must(template.ParseFiles("templates/clients.html"))
 	tmpl.Execute(w, clients)
 }
+
+func GetClients() ([]models.Client, error) {
+	db := database.GetDB()
+
+	rows, err := db.Query("SELECT id, name FROM clients;")
+	if err != nil {
+		log.Println("Ошибка выполнения запроса: ", err)
+		return nil, err
+	}
+	defer rows.Close()
+
+	var clients []models.Client
+
+	for rows.Next() {
+		var client models.Client
+		if err := rows.Scan(&client.ID, &client.Name); err != nil {
+			log.Println("Ошибка при сканировании строки: ", err)
+			return nil, err
+		}
+
+		clients = append(clients, client)
+	}
+
+	if err := rows.Err(); err != nil {
+		log.Println("Ошибка при переборе строк:", err)
+		return nil, err
+	}
+
+	return clients, nil
+}

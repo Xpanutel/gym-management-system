@@ -5,8 +5,8 @@ import (
 )
 
 const (
-	TelegramBotToken = "7375756872:AAG6KJ9JnldMypthj2Rgv-b-HPPaM10sMjA"
-	ChatID = 1456988449
+	TelegramBotToken = "TOKEN"
+	ChatID = "CHATID"
 )
 
 func SendTelegramMessageClient(name, phoneNumber, birthDate, adres string) error {

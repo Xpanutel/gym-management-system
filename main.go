@@ -23,7 +23,7 @@ func main() {
 	http.HandleFunc("/sales", handlers.ShowPurchaseForm)
 
 
-	log.Println("Сервер запущен на :8080")
+	log.Println("Сервер запущен на localhost:8080")
 	if err := http.ListenAndServe(":8080", nil); err != nil {
 		log.Fatal(err)
 	}

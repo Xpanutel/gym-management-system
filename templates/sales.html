@@ -8,6 +8,23 @@
 </head>
 <body>
     <h1>Покупка абонемента</h1>
+    <h2>Список клиентов</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Имя</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{range .Clients}}
+            <tr>
+                <td>{{.ID}}</td>
+                <td>{{.Name}}</td>
+            </tr>
+            {{end}}
+        </tbody>
+    </table>
 
     <h2>Форма покупки абонемента</h2>
     <form method="POST" action="/add-sale">

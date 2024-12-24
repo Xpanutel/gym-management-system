@@ -5,6 +5,7 @@ import (
 	"athleticclub/models"
 	"athleticclub/database"
 	"html/template"
+	"log"
 )
 
 func AddSub(w http.ResponseWriter, r *http.Request) {
@@ -51,4 +52,34 @@ func ShowSubs(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
+}
+
+func GetSubs() ([]models.Subscription, error) {
+	db := database.GetDB()
+
+	rows, err := db.Query("SELECT id, name FROM subscriptions;")
+	if err != nil {
+		log.Println("Ошибка выполнения запроса: ", err)
+		return nil, err
+	}
+	defer rows.Close()
+
+	var subscriptions []models.Subscription
+
+	for rows.Next() {
+		var subscription models.Subscription
+		if err := rows.Scan(&subscription.ID, &subscription.Name); err != nil {
+			log.Println("Ошибка при сканировании строки: ", err)
+			return nil, err
+		}
+
+		subscriptions = append(subscriptions, subscription)
+	}
+
+	if err := rows.Err(); err != nil {
+		log.Println("Ошибка при переборе строк:", err)
+		return nil, err
+	}
+
+	return subscriptions, nil
 }
