@@ -18,6 +18,10 @@ func main() {
 
 	http.HandleFunc("/subs", handlers.ShowSubs)
 	http.HandleFunc("/add-sub", handlers.AddSub)
+	
+	http.HandleFunc("/add-sale", handlers.PurchaseMembership)
+	http.HandleFunc("/sales", handlers.ShowPurchaseForm)
+
 
 	log.Println("Сервер запущен на :8080")
 	if err := http.ListenAndServe(":8080", nil); err != nil {

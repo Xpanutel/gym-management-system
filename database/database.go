@@ -41,6 +41,17 @@ func InitDB(dataSourceName string) {
 			price DECIMAL(10,2) NOT NULL,
 			period VARCHAR(50) NOT NULL
 		);`,
+		`CREATE TABLE IF NOT EXISTS sales (
+			id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+			employee_id INT NOT NULL,
+			client_id INT NOT NULL,
+			subscription_id INT NOT NULL,
+			price DECIMAL(10, 2) NOT NULL,
+			purchase_date DATETIME DEFAULT CURRENT_TIMESTAMP,
+			FOREIGN KEY (employee_id) REFERENCES employees(id),
+			FOREIGN KEY (client_id) REFERENCES clients(id),
+			FOREIGN KEY (subscription_id) REFERENCES subscriptions(id)
+		);`,
 	}
 
 	for _, table := range tables {

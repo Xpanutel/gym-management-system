@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Покупка абонемента</title>
+    <link rel="stylesheet" href="styles.css"> 
+</head>
+<body>
+    <h1>Покупка абонемента</h1>
+
+    <h2>Форма покупки абонемента</h2>
+    <form method="POST" action="/add-sale">
+        <label for="client">Клиент:</label>
+        <input type="text" id="client" name="client" required>
+
+        <label for="subscription">Абонемент:</label>
+        <select id="subscription" name="subscription" required>
+            {{range .Subscriptions}}
+            <option value="{{.Name}}">{{.Name}}</option>
+            {{end}}
+        </select>
+
+        <label for="employee">Сотрудник:</label>
+        <input type="text" id="employee" name="employee" required>
+
+        <button type="submit">Купить</button>
+    </form>
+</body>
+</html>
