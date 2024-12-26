@@ -47,6 +47,7 @@ func InitDB(dataSourceName string) {
 			client_id INT NOT NULL,
 			subscription_id INT NOT NULL,
 			price DECIMAL(10, 2) NOT NULL,
+			payment VARCHAR(30) NOT NULL,
 			purchase_date DATETIME DEFAULT CURRENT_TIMESTAMP,
 			FOREIGN KEY (employee_id) REFERENCES employees(id),
 			FOREIGN KEY (client_id) REFERENCES clients(id),

@@ -4,10 +4,15 @@ import (
 	"github.com/go-telegram-bot-api/telegram-bot-api"
 )
 
+// const (
+// 	TelegramBotToken = "TOKEN"
+// 	ChatID = CHATID
+// )
+
 const (
-	TelegramBotToken = "TOKEN"
-	ChatID = CHATID
-)
+	TelegramBotToken = "7375756872:AAG6KJ9JnldMypthj2Rgv-b-HPPaM10sMjA"
+	ChatID = 1456988449
+  )
 
 func SendTelegramMessageClient(name, phoneNumber, birthDate, adres string) error {
 	bot, err := tgbotapi.NewBotAPI(TelegramBotToken)

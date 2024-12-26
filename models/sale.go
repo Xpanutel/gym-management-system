@@ -7,4 +7,5 @@ type Sale struct {
 	ClientName		string
 	EmployeeName	string
 	Price			int
+	Payment			string
 }

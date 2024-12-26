@@ -15,6 +15,7 @@ func PurchaseMembership(w http.ResponseWriter, r *http.Request) {
 		clientName := r.FormValue("client")
 		subscriptionName := r.FormValue("subscription")
 		employeeName := r.FormValue("employee")
+		payment := r.FormValue("payment")
 
 		// Получаем ID клиента
 		var clientID int
@@ -42,8 +43,8 @@ func PurchaseMembership(w http.ResponseWriter, r *http.Request) {
 		}
 
 		// Вставляем запись о покупке
-		_, err = db.Exec("INSERT INTO sales (employee_id, client_id, subscription_id, price, purchase_date) VALUES (?, ?, ?, ?, ?)",
-			employeeID, clientID, subscriptionID, price, time.Now())
+		_, err = db.Exec("INSERT INTO sales (employee_id, client_id, subscription_id, price, payment, purchase_date) VALUES (?, ?, ?, ?, ?, ?)",
+			employeeID, clientID, subscriptionID, price, payment, time.Now())
 		if err != nil {
 			http.Error(w, "Ошибка при записи в базу данных: "+err.Error(), http.StatusInternalServerError)
 			return
