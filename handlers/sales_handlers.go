@@ -6,6 +6,7 @@ import (
 	"html/template"
 	"net/http"
 	"time"
+	"log"
 )
 
 func PurchaseMembership(w http.ResponseWriter, r *http.Request) {
@@ -16,6 +17,8 @@ func PurchaseMembership(w http.ResponseWriter, r *http.Request) {
 		subscriptionName := r.FormValue("subscription")
 		employeeName := r.FormValue("employee")
 		payment := r.FormValue("payment")
+
+		purchase_date := time.Now()
 
 		// Получаем ID клиента
 		var clientID int
@@ -44,10 +47,15 @@ func PurchaseMembership(w http.ResponseWriter, r *http.Request) {
 
 		// Вставляем запись о покупке
 		_, err = db.Exec("INSERT INTO sales (employee_id, client_id, subscription_id, price, payment, purchase_date) VALUES (?, ?, ?, ?, ?, ?)",
-			employeeID, clientID, subscriptionID, price, payment, time.Now())
+			employeeID, clientID, subscriptionID, price, payment, purchase_date)
 		if err != nil {
 			http.Error(w, "Ошибка при записи в базу данных: "+err.Error(), http.StatusInternalServerError)
 			return
+		}
+
+		err = SendTelegramMessageSale(clientName, clientID, subscriptionName, price, employeeName, purchase_date)
+		if err != nil {
+			log.Println("Ошибка при отправке сообщения в Telegram:", err)
 		}
 
 		http.Redirect(w, r, "/sales", http.StatusSeeOther)
