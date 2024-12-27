@@ -37,7 +37,7 @@ func SendTelegramMessageSale(clientName string, clientID int, subscriptionName s
 	message := tgbotapi.NewMessage(ChatID, "🔔 Новая покупка зарегистрирована 🔔\n\n"+
 		"🔹 Имя покупателя: "+clientName+"\n"+
 		"🔹 ID клиента: "+strconv.Itoa(clientID)+"\n"+
-		"🔹 Имя покупателя: "+subscriptionName+"\n"+
+		"🔹 Купленный абонемент: "+subscriptionName+"\n"+
 		"🔹 Сумма покупки: "+fmt.Sprintf("%.2f", price)+" ₽\n"+
 		"🔹 Дата и время: "+purchase_date.Format("2006-01-02 15:04:05")+"\n"+
 		"🔹 Ответственный сотрудник: "+employeeName)

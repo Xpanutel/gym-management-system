@@ -21,6 +21,7 @@ func main() {
 	
 	http.HandleFunc("/add-sale", handlers.PurchaseMembership)
 	http.HandleFunc("/sales", handlers.ShowPurchaseForm)
+	http.HandleFunc("/sales/reports", handlers.GetSalesReport)
 
 
 	log.Println("Сервер запущен на localhost:8080")

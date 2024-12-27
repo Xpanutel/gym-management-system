@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"time"
 	"log"
+	"fmt"
 )
 
 func PurchaseMembership(w http.ResponseWriter, r *http.Request) {
@@ -87,5 +88,72 @@ func ShowPurchaseForm(w http.ResponseWriter, r *http.Request) {
 	if err := tmpl.Execute(w, data); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
+	}
+}
+
+func GetSalesReport(w http.ResponseWriter, r *http.Request) {
+	if r.Method == http.MethodGet {
+		// Получаем дату из запроса
+		dateStr := r.URL.Query().Get("date")
+		if dateStr == "" {
+			http.Error(w, "Дата не указана", http.StatusBadRequest)
+			return
+		}
+
+		// Преобразуем строку даты в формат time.Time
+		purchaseDate, err := time.Parse("2006-01-02", dateStr)
+		if err != nil {
+			http.Error(w, "Некорректный формат даты", http.StatusBadRequest)
+			return
+		}
+
+		db := database.GetDB()
+		rows, err := db.Query(`
+			SELECT c.name AS client_name, e.name AS employee_name, s.name AS subscription_name, sale.price, sale.purchase_date
+			FROM sales AS sale
+			JOIN clients AS c ON sale.client_id = c.id
+			JOIN employees AS e ON sale.employee_id = e.id
+			JOIN subscriptions AS s ON sale.subscription_id = s.id
+			WHERE DATE(sale.purchase_date) = ?`, purchaseDate.Format("2006-01-02"))
+		if err != nil {
+			http.Error(w, "Ошибка при получении данных из базы: "+err.Error(), http.StatusInternalServerError)
+			return
+		}
+		defer rows.Close()
+
+		// Формируем отчет
+		var report []string
+		for rows.Next() {
+			var clientName, employeeName, subscriptionName string
+			var price float64
+			var purchaseDateRaw []byte 
+
+			err := rows.Scan(&clientName, &employeeName, &subscriptionName, &price, &purchaseDateRaw)
+			if err != nil {
+				http.Error(w, "Ошибка при чтении данных: "+err.Error(), http.StatusInternalServerError)
+				return
+			}
+
+			// Преобразуем []byte в time.Time
+			purchaseDate, err := time.Parse("2006-01-02 15:04:05", string(purchaseDateRaw))
+			if err != nil {
+				http.Error(w, "Ошибка при преобразовании даты: "+err.Error(), http.StatusInternalServerError)
+				return
+			}
+
+			report = append(report, fmt.Sprintf("Клиент: %s, Продавец: %s, Продукт: %s, Цена: %.2f, Дата: %s", 
+				clientName, employeeName, subscriptionName, price, purchaseDate.Format("2006-01-02 15:04:05")))
+		}
+
+		// Проверяем, есть ли продажи за указанную дату
+		if len(report) == 0 {
+			fmt.Fprintln(w, "Нет продаж за указанную дату.")
+			return
+		}
+
+		// Выводим отчет
+		for _, entry := range report {
+			fmt.Fprintln(w, entry)
+		}
 	}
 }
